@@ -5,8 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-bool sorted(linked_list* llPtr);
-void sort(linked_list* llPtr);
+bool sorted(linked_list *llPtr);
+void sort(linked_list *llPtr);
 
 #endif // __INSERTION_SORT_H_

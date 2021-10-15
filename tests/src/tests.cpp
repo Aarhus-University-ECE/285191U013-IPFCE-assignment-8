@@ -6,6 +6,7 @@ extern "C"
 {
 #include "linked_list.h"
 #include "insertion_sort.h"
+#include "list_queue.h"
 
 }
 
@@ -56,6 +57,22 @@ void testLinkedListInsertionSort(int randomArray[], int sortedArray[], int array
 
 }
 
+queue testEnqueueListQueue(int valuesToInsert[], int valuesListSize)
+{
+    queue q;
+    init_queue(&q);
+    int queueSize = 0;
+    REQUIRE(q.size == queueSize);
+    for (int i = 0; i < valuesListSize; ++i)
+    {
+        enqueue(&q, valuesToInsert[i]);
+        REQUIRE(q.size == ++queueSize);
+    }
+    return q;
+}
+
+
+
 TEST_CASE("insertion_sort")
 {
     // Test full random list
@@ -79,12 +96,28 @@ TEST_CASE("insertion_sort")
 
 TEST_CASE("linked_queue")
 {
-    // queue q;
-    // init_queue(&q);
-    // if (!empty(&q)) printf("init not working");
-    // enqueue(&q, 47);
-    // int y=dequeue(&q);
-    // if (y != 47) printf("enqueue/dequeue not working");
+    // Test inserting random values into queue and check size
+    int valuesToInsert[5] = {-5,10,0,5};
+    testEnqueueListQueue(valuesToInsert, 5);
+
+    // Test empty function with empty queue
+    queue q;
+    init_queue(&q);
+    REQUIRE(empty(&q) == 1);
+
+    // Test empty function with non-empty queue
+    queue q1;
+    init_queue(&q1);
+    enqueue(&q1, 5);
+    REQUIRE(empty(&q1) == 0);
+    dequeue(&q1);
+    REQUIRE(empty(&q1) == 1); 
+
+    // Test enqueue then dequeue
+
+    // Test enqueue and that the values of the queue are correct
+
+    // Test dequeue and that the dequeued values are correct
 
 }
 
