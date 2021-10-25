@@ -45,30 +45,15 @@ bool compareArrays(int arr1[], int arr2[], int arrSize)
     return true;
 }
 // For testing purposes only
-void testLinkedListInsertionSort(int randomArray[], int sortedArray[], int arraySize)
+void testLinkedListInsertionSort(int randomArray[], int sortedArray[], int linkedListArray[], int arraySize)
 {
     linked_list * llPtr = convertArrayToLinkedList(randomArray, arraySize);
-    int linkedListArray[arraySize];
     convertLinkedListToArray(llPtr, linkedListArray);
     assert(compareArrays(randomArray, linkedListArray, arraySize) == true); // checks array and linked list are equal
     sort(llPtr);
     convertLinkedListToArray(llPtr, linkedListArray);
     REQUIRE(compareArrays(sortedArray, linkedListArray, arraySize) == true); // check sorted array and sorted linked list are equal
 
-}
-
-queue testEnqueueListQueue(int valuesToInsert[], int valuesListSize)
-{
-    queue q;
-    init_queue(&q);
-    int queueSize = 0;
-    REQUIRE(q.size == queueSize);
-    for (int i = 0; i < valuesListSize; ++i)
-    {
-        enqueue(&q, valuesToInsert[i]);
-        REQUIRE(q.size == ++queueSize);
-    }
-    return q;
 }
 
 
@@ -78,27 +63,38 @@ TEST_CASE("insertion_sort")
     // Test full random list
     int testerList[7] = {-3,22,11,33,3,2,1};
     int sortedList[7] = {-3,1,2,3,11,22,33};
-    testLinkedListInsertionSort(testerList, sortedList, 7);
+    int linkedListArray[7];
+    testLinkedListInsertionSort(testerList, sortedList, linkedListArray, 7);
 
 
     // Test list with both negative and positive numbers
     int testerList2[3] = {0,-1,1};
     int sortedList2[3] = {-1,0,1};
-    testLinkedListInsertionSort(testerList2, sortedList2, 3);
+    int linkedListArray2[3];
+    testLinkedListInsertionSort(testerList2, sortedList2, linkedListArray2, 3);
 
 
     // Test list with duplicate values
     int testerList3[10] = {6,6,5,4,2,3,3,3,2,1};
     int sortedList3[10] = {1,2,2,3,3,3,4,5,6,6};
-    testLinkedListInsertionSort(testerList3, sortedList3, 10);
+    int linkedListArray3[10];
+    testLinkedListInsertionSort(testerList3, sortedList3, linkedListArray3, 10);
 }
 
 
 TEST_CASE("linked_queue")
 {
     // Test inserting random values into queue and check size
-    int valuesToInsert[5] = {-5,10,0,5};
-    testEnqueueListQueue(valuesToInsert, 5);
+    int valuesToInsert[4] = {-5,10,0,5};
+    queue qq;
+    init_queue(&qq);
+    int queueSize = 0;
+    REQUIRE(empty(&qq) == 1);
+    for (int i = 0; i < 4; ++i)
+    {
+        enqueue(&qq, valuesToInsert[i]);
+        REQUIRE(qq.size == ++queueSize);
+    }
 
     // Test empty function with empty queue
     queue q;
@@ -114,10 +110,16 @@ TEST_CASE("linked_queue")
     REQUIRE(empty(&q1) == 1); 
 
     // Test enqueue then dequeue
+    enqueue(&q1,-5);
+    enqueue(&q1,10);
+    enqueue(&q1,0);
+    enqueue(&q1,5);
+   
 
-    // Test enqueue and that the values of the queue are correct
-
-    // Test dequeue and that the dequeued values are correct
+    REQUIRE(-5 == dequeue(&q1));
+    REQUIRE(10 == dequeue(&q1));
+    REQUIRE(0 == dequeue(&q1));
+    REQUIRE(5 == dequeue(&q1));
 
 }
 
