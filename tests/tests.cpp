@@ -1,16 +1,146 @@
-#define CATCH_CONFIG_MAIN // This tells Catch to provide a main() - only do this in one cpp file
-#include "catch.hpp"
-#include <assert.h>
+#include "catch2/matchers/catch_matchers.hpp"
 
-extern "C"
-{
-#include "linked_list.h"
+extern "C" {
 #include "insertion_sort.h"
-#include "list_queue.h"
-
+#include "queue.h"
 }
 
-// See Catch2's documentation: https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#scaling-up
+TEST_CASE("initialize", "[queue]") {
+  queue q;
+  initialize(&q);
+  REQUIRE(q.front == NULL);
+  REQUIRE(q.rear == NULL);
+  REQUIRE(q.size == 0);
+}
+
+TEST_CASE("empty", "[queue]") {
+  queue q;
+  q.front = NULL;
+  q.rear = NULL;
+  q.size = 0;
+  REQUIRE(empty(&q));
+  node n;
+  n.data = 1;
+  n.next = NULL;
+  q.front = &n;
+  q.rear = &n;
+  q.size = 1;
+  REQUIRE(!empty(&q));
+}
+
+TEST_CASE("full", "[queue]") {
+  queue q;
+  q.front = NULL;
+  REQUIRE(!full(&q));
+  node n;
+  n.data = 1;
+  n.next = NULL;
+  q.front = &n;
+  q.rear = &n;
+  q.size = 1;
+  REQUIRE(!full(&q));
+}
+
+TEST_CASE("enqueue", "[queue]") {
+  queue q;
+  q.front = NULL;
+  q.rear = NULL;
+  q.size = 0;
+  const int x0 = 1;
+  const int x1 = 2;
+  enqueue(&q, x0);
+  REQUIRE(q.front != NULL);
+  REQUIRE(q.rear != NULL);
+  REQUIRE(q.front->data == x0);
+  REQUIRE(q.size == 1);
+
+  enqueue(&q, x1);
+  REQUIRE(q.front != NULL);
+  REQUIRE(q.rear != NULL);
+  REQUIRE(q.front->data == x0);
+  REQUIRE(q.rear->data == x1);
+  REQUIRE(q.size == 2);
+}
+
+
+TEST_CASE("dequeue", "[queue]") {
+    queue q;
+    q.front = NULL;
+    q.rear = NULL;
+    q.size = 0;
+    const int x0 = 1;
+    const int x1 = 2;
+
+    node n0;
+    n0.data = x0;
+    n0.next = NULL;
+    node n1;
+    n1.data = x1;
+    n1.next = NULL;
+    // enqueue(&q, x0);
+    q.front = &n0;
+    q.rear = &n0;
+    q.size = 1;
+
+    // enqueue(&q, x1);
+    q.rear = &n1;
+    q.front->next = &n1;
+    q.size = 2;
+
+    const int y0 = dequeue(&q);
+    REQUIRE(y0 == x0);
+    REQUIRE(q.front != NULL);
+    REQUIRE(q.rear != NULL);
+    REQUIRE(q.front->data == x1);
+    REQUIRE(q.rear->data == x1);
+    REQUIRE(q.size == 1);
+
+    const int y1 = dequeue(&q);
+    REQUIRE(y1 == x1);
+    REQUIRE(q.front == NULL);
+    REQUIRE(q.rear == NULL);
+    REQUIRE(q.size == 0);
+}
+
+TEST_CASE("queue", "[queue]") {
+    queue q;
+    initialize(&q);
+    REQUIRE(empty(&q));
+    const int x0 = 2;
+    const int x1 = 3;
+    enqueue(&q, x0);
+    REQUIRE(!empty(&q));
+    enqueue(&q, x1);
+    REQUIRE(!empty(&q));
+    const int y0 = dequeue(&q);
+    REQUIRE(!empty(&q));
+    const int y1 = dequeue(&q);
+    REQUIRE(empty(&q));
+    REQUIRE(!full(&q));
+
+    REQUIRE(x0 == y0);
+    REQUIRE(x1 == y1);
+
+    int xs[] = {1, 2, 3, 4, 5};
+    const int len = sizeof(xs) / sizeof(int);
+    for (int i = 0; i < len; i++) {
+        enqueue(&q, xs[i]);
+    }
+
+    int ys[len];
+    for (int i = 0; i < len; i++) {
+        ys[i] = dequeue(&q);
+    }
+
+    REQUIRE(empty(&q));
+    REQUIRE(xs[0] == ys[0]);
+    REQUIRE(xs[1] == ys[1]);
+    REQUIRE(xs[2] == ys[2]);
+    REQUIRE(xs[3] == ys[3]);
+    REQUIRE(xs[4] == ys[4]);
+}
+
+
 
 // For testing purposes only
 linked_list* convertArrayToLinkedList(int array[], int arraySize)
