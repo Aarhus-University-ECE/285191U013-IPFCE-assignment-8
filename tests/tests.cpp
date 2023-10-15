@@ -1,7 +1,7 @@
 #include "catch2/matchers/catch_matchers.hpp"
-#include <assert.h>
 
 extern "C" {
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -222,7 +222,7 @@ bool arrays_equal(const int *arr1, const int *arr2, const int len) {
     assert(arr1 != NULL);
     assert(arr2 != NULL);
     assert(len > 0);
-    
+
     for (int i = 0; i < len; i++) {
         if (arr1[i] != arr2[i]) {
             return false;
@@ -266,9 +266,9 @@ TEST_CASE("2-numbers", "[insertion_sort]") {
 }
 
 TEST_CASE("numbers", "[insertion_sort]") {
-    const int input[] = { 3, 5, 11, 2, 16, 18, 6, 4, 14, 9, 7, 20, 10, 19, 8, 1, 17, 13, 15, 12 };
+    const int input[] = { 3, 5, 11, 2, 16, 18, 6, 4, -14, 9, -7, 20, 10, 19, 8, 1, 17, 13, 15, -12 };
     const int len = sizeof(input) / sizeof(int);
-    const int input_sorted[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+    const int input_sorted[] = { -14, -12, -7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20 };
 
     node* list = ll_from_array(input, len);
     isort(list);
