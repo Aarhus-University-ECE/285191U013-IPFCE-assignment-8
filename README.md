@@ -4,6 +4,6 @@ See `assignment-8.pdf` for the assignment.
 
 ## Test
 ```bash
-make test
+make -s test
 ```
 
