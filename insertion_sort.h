@@ -2,4 +2,4 @@
 
 #include "node.h"
 
-void isort(node* list);
+node* isort(node* list);
