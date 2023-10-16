@@ -4,11 +4,11 @@ void initialize(queue *q) {
 
 }
 
-bool empty(queue *q) {
+bool empty(const queue *q) {
 
 }
 
-bool full(queue *q) {
+bool full(const queue *q) {
 
 }
 

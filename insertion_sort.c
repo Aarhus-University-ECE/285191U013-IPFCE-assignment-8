@@ -1,6 +1,6 @@
 #include "insertion_sort.h"
 
-void isort(node *list) {
+node* isort(node *list) {
 
 }
 
